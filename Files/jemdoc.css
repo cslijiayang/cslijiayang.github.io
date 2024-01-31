@@ -512,6 +512,7 @@ p.pub_link{
   .section img {
     width: 200px; /* 你可以根据实际情况调整宽度 */
     height: auto; /* 高度会根据宽度自动调整保持图片比例 */
+    margin-left: 20px;
     margin-right: 20px; /* 图片和文本之间的间距 */
     border: solid 1px #000; /* 图片边框，如果不需要可以去掉 */
   }
