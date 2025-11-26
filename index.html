@@ -135,15 +135,25 @@ Nie</p>
 <br />
 <br />
 <p style="margin-top: 20px; font-size: 14px;">
-    访问人数：<span id="visitor_count"></span>
+    visitors：<span id="visitor_count"></span>
 </p>
 
 <script>
-fetch("https://cslijiayang.github.io")
-  .then(r => r.json())
-  .then(d => {
-    document.getElementById("visitor_count").innerText = d.value;
+fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up", {
+    headers: {
+        "Authorization": "ut_GeQnfEWqBNkPFbx2abR43AJFjJAmjCT1qR1KQSdX"
+    }
+})
+  .then(function (r) { return r.json(); })
+  .then(function (data) {
+      // data.value 就是当前计数
+      document.getElementById("visitor_count").innerText = data.value;
+  })
+  .catch(function (err) {
+      console.error("CounterAPI error:", err);
+      document.getElementById("visitor_count").innerText = "N/A";
   });
 </script>
+
 </body>
 </html>
