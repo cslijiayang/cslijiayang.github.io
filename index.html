@@ -134,6 +134,16 @@ Nie</p>
  
 <br />
 <br />
+<p style="margin-top: 20px; font-size: 14px;">
+    访问人数：<span id="visitor_count"></span>
+</p>
 
+<script>
+fetch("https://lijiayang.net/")
+  .then(r => r.json())
+  .then(d => {
+    document.getElementById("visitor_count").innerText = d.value;
+  });
+</script>
 </body>
 </html>
