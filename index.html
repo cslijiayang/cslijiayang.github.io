@@ -147,13 +147,16 @@ fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up
   })
   .then(function (data) {
       console.log("CounterAPI response:", data);
-      document.getElementById("visitor_count").innerText = data.value;
+      // 真正的数在 data.data.value 里
+      var v = (data && data.data && data.data.value) ? data.data.value : 0;
+      document.getElementById("visitor_count").innerText = v;
   })
   .catch(function (err) {
       console.error("CounterAPI error:", err);
       document.getElementById("visitor_count").innerText = "N/A";
   });
 </script>
+
 
 
 </body>
