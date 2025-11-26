@@ -133,35 +133,20 @@ Nie</p>
 
  
 <br />
-<p style="margin-top: 20px; font-size: 14px;">
-    visitors: <span id="visitor_count">Loading...</span>
-</p>
-
-<!-- 引入 CounterAPI 的浏览器 SDK -->
-<script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
-
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // 1. 用你的 workspace 名创建一个 Counter 客户端
-    const counter = new Counter({
-      workspace: 'jiayang-lis-team-1807'   // 这里用你面板里显示的 workspace slug
-      // 如果将来设成私有，可以再加 accessToken: '...'
-    });
-
-    // 2. 用你的 counter slug 递增一次并拿到当前值
-    counter.up('first-counter-1807')
-      .then(function (result) {
-        // SDK 直接返回 { value: xxx, ... }
-        console.log('Counter result:', result);
-        document.getElementById('visitor_count').textContent = result.value;
-      })
-      .catch(function (error) {
-        console.error('Counter error:', error);
-        document.getElementById('visitor_count').textContent = 'Error';
-      });
+// 静默打点：页面加载时给 CounterAPI 发送一次 +1 请求
+fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up")
+  .then(function (r) {
+    // 不做前端展示，只在控制台打个日志方便你调试
+    return r.json();
+  })
+  .then(function (data) {
+    console.log("CounterAPI hit ok:", data);
+  })
+  .catch(function (err) {
+    console.error("CounterAPI error:", err);
   });
 </script>
-
 
 </body>
 </html>
