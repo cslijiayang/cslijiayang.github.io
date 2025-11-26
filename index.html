@@ -147,8 +147,8 @@ fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up
   })
   .then(function (data) {
       console.log("CounterAPI response:", data);
-      // 真正的数在 data.data.value 里
-      var v = (data && data.data && data.data.value) ? data.data.value : 0;
+      // 直接取 data.data.value（如果结构不对，这里会在 Console 报错，方便我们看）
+      var v = data.data.value;
       document.getElementById("visitor_count").innerText = v;
   })
   .catch(function (err) {
@@ -156,6 +156,7 @@ fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up
       document.getElementById("visitor_count").innerText = "N/A";
   });
 </script>
+
 
 
 
