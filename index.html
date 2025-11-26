@@ -133,20 +133,27 @@ Nie</p>
 
  
 <br />
-<br />
 <p style="margin-top: 20px; font-size: 14px;">
-    visitors：<span id="visitor_count"></span>
+    visitors: <span id="visitor_count"></span>
 </p>
 
 <script>
 fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up", {
+    method: "GET",
     headers: {
-        "Authorization": "ut_GeQnfEWqBNkPFbx2abR43AJFjJAmjCT1qR1KQSdX"
+        // 注意这里要有 Bearer 前缀！
+        "Authorization": "Bearer ut_GeQnfEWqBNkPFbx2abR43AJFjJAmjCT1qR1KQSdX"
     }
 })
-  .then(function (r) { return r.json(); })
+  .then(function (r) {
+      if (!r.ok) {
+          throw new Error("HTTP " + r.status + " " + r.statusText);
+      }
+      return r.json();
+  })
   .then(function (data) {
-      // data.value 就是当前计数
+      console.log("CounterAPI response:", data);
+      // 一般 data.value 就是当前计数
       document.getElementById("visitor_count").innerText = data.value;
   })
   .catch(function (err) {
@@ -154,6 +161,7 @@ fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up
       document.getElementById("visitor_count").innerText = "N/A";
   });
 </script>
+
 
 </body>
 </html>
