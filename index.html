@@ -134,52 +134,33 @@ Nie</p>
  
 <br />
 <p style="margin-top: 20px; font-size: 14px;">
-    visitors: <span id="visitor_count"></span>
+    visitors: <span id="visitor_count">Loading...</span>
 </p>
 
+<!-- 引入 CounterAPI 的浏览器 SDK -->
+<script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
+
 <script>
-fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up")
-  .then(function (r) {
-      if (!r.ok) {
-          throw new Error("HTTP " + r.status + " " + r.statusText);
-      }
-      return r.json();
-  })
-  .then(function (data) {
-      console.log("CounterAPI raw response:", data);
+  document.addEventListener('DOMContentLoaded', function () {
+    // 1. 用你的 workspace 名创建一个 Counter 客户端
+    const counter = new Counter({
+      workspace: 'jiayang-lis-team-1807'   // 这里用你面板里显示的 workspace slug
+      // 如果将来设成私有，可以再加 accessToken: '...'
+    });
 
-      // 先取内层 data，如果没有就用外层
-      var inner = (data && typeof data === "object" && "data" in data) ? data.data : data;
-
-      // 优先尝试常见字段名
-      var v = undefined;
-      if (inner && typeof inner === "object") {
-          if ("value" in inner) v = inner.value;
-          else if ("count" in inner) v = inner.count;
-          else if ("total" in inner) v = inner.total;
-          else {
-              // 再从 inner 里找第一个是 number 的字段兜底
-              for (var k in inner) {
-                  if (typeof inner[k] === "number") {
-                      v = inner[k];
-                      break;
-                  }
-              }
-          }
-      }
-
-      // 如果还没找到，就设为 0，避免 undefined
-      if (v === undefined || v === null) v = 0;
-
-      document.getElementById("visitor_count").innerText = v;
-  })
-  .catch(function (err) {
-      console.error("CounterAPI error:", err);
-      document.getElementById("visitor_count").innerText = "N/A";
+    // 2. 用你的 counter slug 递增一次并拿到当前值
+    counter.up('first-counter-1807')
+      .then(function (result) {
+        // SDK 直接返回 { value: xxx, ... }
+        console.log('Counter result:', result);
+        document.getElementById('visitor_count').textContent = result.value;
+      })
+      .catch(function (error) {
+        console.error('Counter error:', error);
+        document.getElementById('visitor_count').textContent = 'Error';
+      });
   });
 </script>
-
-
 
 
 </body>
