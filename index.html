@@ -8,6 +8,18 @@
 <title>Jiayang Li</title>
 <link rel="shortcut icon" href="./Files/logo/bio.ico" />
 <style>
+  @font-face {
+    font-family: "Chakra Petch"; src: url("./Files/fonts/chakra-petch-400.woff2") format("woff2");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "Chakra Petch"; src: url("./Files/fonts/chakra-petch-700.woff2") format("woff2");
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "Chakra Petch"; src: url("./Files/fonts/chakra-petch-400-italic.woff2") format("woff2");
+    font-weight: 400; font-style: italic; font-display: swap;
+  }
   :root {
     --deep:  #2b4248;
     --mist:  #a7bfbf;
@@ -80,6 +92,7 @@
   .sheet {
     position: relative; z-index: 2;
     background: var(--paper);
+    font-family: "Chakra Petch", system-ui, -apple-system, "PingFang SC", sans-serif;
     box-shadow: 0 -26px 70px rgba(0,0,0,.42);
     min-height: 100vh;
     transition: transform .62s cubic-bezier(.65,.02,.2,1), opacity .4s ease;
