@@ -20,6 +20,10 @@
     font-family: "Chakra Petch"; src: url("./Files/fonts/chakra-petch-400-italic.woff2") format("woff2");
     font-weight: 400; font-style: italic; font-display: swap;
   }
+  @font-face {
+    font-family: "Orbitron"; src: url("./Files/fonts/orbitron-700.woff2") format("woff2");
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
   :root {
     --deep:  #2b4248;
     --mist:  #a7bfbf;
@@ -46,6 +50,7 @@
   .hero {
     position: fixed; inset: 0; height: 100vh; height: 100svh;
     background: var(--deep); color: var(--paper);
+    font-family: "Chakra Petch", system-ui, -apple-system, "PingFang SC", sans-serif;
     display: grid; place-items: center; z-index: 50;
     transition: transform .62s cubic-bezier(.65,.02,.2,1), opacity .4s ease .16s;
   }
@@ -59,7 +64,9 @@
     box-shadow: 0 20px 54px rgba(0,0,0,.4);
   }
   .hero h1 {
-    font-size: 44px; font-weight: 700; letter-spacing: -.02em; line-height: 1.12;
+    font-family: "Orbitron", system-ui, sans-serif;
+    text-transform: uppercase;
+    font-size: 38px; font-weight: 700; letter-spacing: .06em; line-height: 1.12;
     margin: 0 0 8px; color: var(--paper);
   }
   .hero .role { color: var(--mist); font-size: 17.5px; margin-bottom: 18px; }
@@ -208,7 +215,7 @@
   @media (max-width: 820px) {
     .hero-in { grid-template-columns: 1fr; gap: 26px; justify-items: start; }
     .hero-in img { width: 148px; }
-    .hero h1 { font-size: 31px; }
+    .hero h1 { font-size: 26px; letter-spacing: .04em; }
     .hero p { font-size: 16px; }
     section { grid-template-columns: 1fr; gap: 18px; padding: 40px 0; }
     .label { position: static; font-size: 23px; }
