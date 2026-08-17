@@ -1,152 +1,534 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta name="robots" content="index, follow" />
-<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta name="keywords" content="Jiayang Li, 李佳阳, Harbin Institute of Technology">
-<link rel="stylesheet" href="./Files/jemdoc.css" type="text/css" />
-<script src="jquery.min.js"></script>
-<link rel="shortcut icon" href="./Files/logo/bio.ico">
-<title>Jiayang Li</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Jiayang Li (李佳阳), master's student in Computer Science and Technology at Peking University." />
+<meta name="keywords" content="Jiayang Li, 李佳阳, Peking University, Harbin Institute of Technology, image fusion" />
+<title>Jiayang Li — Style G (滚动覆盖)</title>
+<link rel="shortcut icon" href="./Files/logo/bio.ico" />
+<style>
+  :root {
+    --deep:  #2b4248;
+    --mist:  #a7bfbf;
+    --paper: #f8f5f0;
+    --deep-soft: #35505a;
+    --ink-dim: #dbe4e2;
+    --text: #47605f;
+    --faint: #8ba1a1;
+    --wrap: 940px;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--deep); scroll-behavior: smooth; }
+  /* 首页状态下锁定滚动 */
+  body:not(.entered) { overflow: hidden; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: Georgia, "Times New Roman", "Songti SC", "PingFang SC", serif;
+    font-size: 17px; line-height: 1.68; -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ================= 1. cover page ================= */
+  .hero {
+    position: fixed; inset: 0; height: 100vh; height: 100svh;
+    background: var(--deep); color: var(--paper);
+    display: grid; place-items: center; z-index: 50;
+    transition: transform .62s cubic-bezier(.65,.02,.2,1), opacity .4s ease .16s;
+  }
+  body.entered .hero { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+  .hero-in {
+    max-width: 960px; padding: 0 34px;
+    display: grid; grid-template-columns: 250px 1fr; gap: 52px; align-items: center;
+  }
+  .hero-in img {
+    width: 230px; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 8px;
+    box-shadow: 0 20px 54px rgba(0,0,0,.4);
+  }
+  .hero h1 {
+    font-size: 44px; font-weight: 700; letter-spacing: -.02em; line-height: 1.12;
+    margin: 0 0 8px; color: var(--paper);
+  }
+  .hero .role { color: var(--mist); font-size: 17.5px; margin-bottom: 18px; }
+  .hero p { color: var(--ink-dim); margin: 0 0 10px; font-size: 17px; }
+  .hero p.focus { color: var(--mist); font-size: 16px; margin: 0 0 26px; }
+  .hero b { color: var(--paper); font-weight: 700; }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; font-size: 14px;
+          font-family: -apple-system, "Helvetica Neue", sans-serif; color: var(--mist);
+          border: 1px solid rgba(167,191,191,.42); border-radius: 999px;
+          padding: 7px 15px; transition: .2s; }
+  .pill:hover { background: var(--mist); border-color: var(--mist); color: var(--deep); }
+  .pill svg { width: 15px; height: 15px; }
+
+  .more {
+    position: absolute; bottom: 46px; left: 50%; transform: translateX(-50%);
+    display: inline-flex; align-items: center; gap: 11px; cursor: pointer;
+    font-family: -apple-system, "Helvetica Neue", sans-serif;
+    font-size: 13px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--mist); background: none;
+    border: 1px solid rgba(167,191,191,.42); border-radius: 999px;
+    padding: 12px 28px; transition: .24s;
+  }
+  .more:hover { background: var(--mist); border-color: var(--mist); color: var(--deep); }
+  .more svg { width: 14px; height: 14px; animation: nudge 1.9s ease-in-out infinite; }
+  @keyframes nudge { 0%,100% { transform: translateY(-2px); } 50% { transform: translateY(2px); } }
+
+  /* ================= 2. sheet sliding over ================= */
+  .sheet {
+    position: relative; z-index: 2;
+    background: var(--paper);
+    box-shadow: 0 -26px 70px rgba(0,0,0,.42);
+    min-height: 100vh;
+    transition: transform .62s cubic-bezier(.65,.02,.2,1), opacity .4s ease;
+  }
+  body:not(.entered) .sheet { transform: translateY(34px); opacity: 0; }
+
+  .bar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid rgba(43,66,72,.14);
+  }
+  .bar-in {
+    max-width: var(--wrap); margin: 0 auto; padding: 0 34px; height: 62px;
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  }
+  .bar-name {
+    display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
+    font-family: inherit; font-weight: 700; font-size: 18px; color: var(--deep);
+    background: none; border: 0; padding: 0; transition: color .18s;
+  }
+  .bar-name svg { width: 15px; height: 15px; color: var(--faint);
+                  transition: transform .22s, color .18s; }
+  .bar-name:hover svg { transform: translateX(-3px); color: var(--deep); }
+  .bar nav { display: flex; gap: 26px; }
+  .bar nav a { font-size: 14px; letter-spacing: .1em; text-transform: uppercase;
+               font-family: -apple-system, "Helvetica Neue", sans-serif;
+               color: var(--faint); padding: 4px 0; border-bottom: 2px solid transparent;
+               transition: .18s; }
+  .bar nav a:hover { color: var(--deep); border-bottom-color: var(--mist); }
+
+  .sheet-in { max-width: var(--wrap); margin: 0 auto; padding: 0 34px; }
+
+  section { display: grid; grid-template-columns: 150px 1fr; gap: 34px;
+            padding: 52px 0; border-bottom: 1px solid rgba(43,66,72,.12); }
+  section:last-of-type { border-bottom: none; }
+  .label { font-size: 27px; font-weight: 700; color: var(--deep); letter-spacing: -.01em;
+           position: sticky; top: 100px; align-self: start; }
+  .label::after { content: ""; display: block; width: 34px; height: 3px;
+                  background: var(--mist); border-radius: 2px; margin-top: 10px; }
+
+  .row { margin-bottom: 22px; }
+  .row:last-child { margin-bottom: 0; }
+  .row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; }
+  .row h3 { font-size: 18px; font-weight: 700; color: var(--deep); margin: 0; }
+  .row time { font-style: italic; color: var(--faint); font-size: 15px; white-space: nowrap; }
+  .row p { margin: 2px 0 0; font-size: 16.5px; }
+  .row .adv { color: var(--faint); }
+  .row a { color: var(--deep); border-bottom: 1px solid var(--mist); }
+  .row a:hover { background: rgba(167,191,191,.32); }
+
+  /* research : 三个分类块 */
+  .cats { display: flex; flex-wrap: wrap; gap: 14px; }
+  .cat {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex: 1 1 auto; min-width: 0; white-space: nowrap;
+    text-align: left; cursor: pointer; font-family: inherit;
+    background: #fff; border: 1px solid rgba(43,66,72,.14); border-radius: 8px;
+    padding: 15px 18px; color: var(--deep); font-size: 16.5px; font-weight: 700;
+    box-shadow: 0 6px 18px rgba(43,66,72,.07); transition: .22s;
+  }
+  .cat:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(43,66,72,.14); }
+  .cat .chev { width: 15px; height: 15px; flex: none; color: var(--faint); transition: transform .28s; }
+  .cat.on { background: var(--deep); color: var(--paper); border-color: var(--deep); }
+  .cat.on .chev { color: var(--mist); transform: rotate(180deg); }
+
+  .panel { display: grid; grid-template-rows: 0fr; opacity: 0;
+           transition: grid-template-rows .38s ease, opacity .28s ease, margin .38s ease; }
+  .panel > .panel-in { overflow: hidden; }
+  .panel.open { grid-template-rows: 1fr; opacity: 1; margin-top: 20px; }
+
+  /* research cards */
+  .card { background: #fff; border-radius: 8px; padding: 18px 20px;
+          box-shadow: 0 8px 26px rgba(43,66,72,.11); margin-bottom: 18px; transition: .22s; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 16px 38px rgba(43,66,72,.17); }
+  .card:last-of-type { margin-bottom: 0; }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; font-family: -apple-system, "Helvetica Neue", sans-serif;
+    background: var(--deep); color: var(--paper);
+    border-radius: 4px; padding: 3px 9px; margin-bottom: 9px;
+  }
+  .note {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; font-family: -apple-system, "Helvetica Neue", sans-serif;
+    color: var(--deep); background: var(--mist);
+    border-radius: 4px; padding: 3px 9px; margin-left: 6px;
+  }
+  .legend { margin: 14px 0 0; font-size: 13px; color: var(--faint); }
+  .soon { margin: 0; color: var(--faint); font-style: italic; }
+  .card h3 { font-size: 17px; font-weight: 700; color: var(--deep); margin: 0 0 7px; line-height: 1.4; }
+  .card .authors { font-size: 15.5px; margin: 0 0 8px; }
+  .card .authors .me { color: var(--deep); font-weight: 700; border-bottom: 1px solid var(--mist); }
+  .card .desc { font-size: 15.5px; margin: 0; }
+  .card .meta { font-size: 14.5px; margin: 8px 0 0;
+                font-family: -apple-system, "Helvetica Neue", sans-serif; }
+  .card .meta .venue { color: var(--deep); font-weight: 700; }
+  .card .meta .sep { color: var(--faint); margin: 0 6px; }
+  .card a { color: var(--deep); border-bottom: 1px solid var(--mist); }
+  .card a:hover { background: rgba(167,191,191,.32); }
+
+  ul.plain { list-style: none; padding: 0; margin: 0; }
+  ul.plain li { position: relative; padding-left: 20px; margin-bottom: 10px; }
+  ul.plain li::before { content: ""; position: absolute; left: 2px; top: .75em;
+                        width: 6px; height: 6px; border-radius: 50%; background: var(--mist); }
+  ul.plain b { color: var(--deep); font-weight: 700; }
+
+  footer { background: var(--deep); color: var(--mist); font-size: 14.5px; }
+  .foot-in { max-width: var(--wrap); margin: 0 auto; padding: 30px 34px;
+             display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer a { color: var(--mist); border-bottom: 1px solid rgba(167,191,191,.4); }
+  footer a:hover { color: var(--paper); }
+
+  @media (max-width: 820px) {
+    .hero-in { grid-template-columns: 1fr; gap: 26px; justify-items: start; }
+    .hero-in img { width: 148px; }
+    .hero h1 { font-size: 31px; }
+    .hero p { font-size: 16px; }
+    section { grid-template-columns: 1fr; gap: 18px; padding: 40px 0; }
+    .label { position: static; font-size: 23px; }
+    .row-top { flex-direction: column; gap: 1px; }
+    .bar nav { gap: 16px; }
+    .bar nav a { font-size: 12.5px; }
+    .bar-name { display: none; }
+    .cats { flex-direction: column; }
+  }
+</style>
 </head>
- 
- 
 <body>
 
-<a id="home" class="anchor"></a>
-<div id="container"> 
-<div class="container"> 
-
-<table class="imgtable"><tr><td>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="./"><img src="Files/bali.jpg" alt="" height="180px" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<td align="left"><p><a href="./"><font size="4">Jiayang Li (</font><font size="4"; font style="font-family:Microsoft YaHei">李佳阳</font><font size="4">)</font></a><br />
-<i> Undergraduate </i>
-<br /><br />
- <class="staffshortcut">
- <A HREF="#Education"> <b>Education</b> </A> |
- <A HREF="#Internship"> <b>Internship</b> </A> | 
- <A HREF="#Interest"><b>Research Interest</b></A> | 
- <A HREF="#Projects"><b>Projects</b></A> | 
- <A HREF="#Honors"><b>Honors</b></A> 
-<!--  <A HREF="#Code"><b>Code</b></A> -->
-	 
-<!--  <A HREF="#Publications"><b>Publications</b></A> | 
- <A HREF="#Patents"><b>Patents</b></A> | 
- <A HREF="#Fundings"><b>Fundings</b></A> | 
- <A HREF="#Services"><b>Services</b></A> |  -->
- 
-<br />
-<br />
-<br />
-Faculty of Computing, Harbin Institute of Technology</a><br />
-<!-- Location: Building 5-Room 426, Luoyu Road #129, Hongshan District, Wuhan, Hubei, China<br /> -->
-Email: lijiayang.cs@gmail.com (prior); &nbsp;&nbsp;&nbsp;&nbsp; lijiayang@stu.hit.edu.cn <br />
-<!-- [<a href="https://scholar.google.com/citations?user=zyadotcAAAAJ&hl=zh-CN" target="_blank">Google Scholar</a>] -->
-[<a href="https://github.com/Henry-Lee-real" target="_blank">GitHub</a>]
-[<a href="https://scholar.google.com/citations?hl=en&user=f7AKG78AAAAJ" target="_blank">Google Scholar</a>]
-<!-- [<a href="http://jszy.whu.edu.cn/lijiayuan1/zh_CN/index.htm" target="_blank"><font style="font-family:Microsoft YaHei">武大个人主页</font></a>]
-[<a href="https://skyearth.org/" target="_blank"><font style="font-family:Microsoft YaHei">研究团队主页</font></a>] -->
-</td></tr></table>
-
-
- 
-
-<A NAME="Education"><h2>Education</h2></A>
-<ul>	
-<li> 2023.5~2023.7 NUS School of Computing</li>
-<br />	
-<li> 2021.9~Now Harbin Institute of Technology, major in AI </li>
-</ul>
-<br />
-
-
-	
-<A NAME="Internship"><h2>Internship</h2></A>
-<ul>
-<li> 2022.12~2023.2 Sichuan Changhong Electric Co.,Ltd. AI laboratory </li>
-</ul>
-<br />
-
-	
-
- 
-<A NAME="Interest"><h2>Research Interest</h2></A>
-My research interests cover high-level and low-level visual tasks. Currently, I focus on the following research topics:
-<ul>
-<li>Multimodal Image Fusion </li>
-<li>Object Detection </li>
-<li>Image Editing and Generation </li>
-</ul>
-<br />
-
-
-<A NAME="Projects"><h2>Projects</h2></A>	
-<!-- <div class="section">
-  <img src="./projects/style.png" alt="stylegan">
-  <div class="text-content">
-    <p>National Innovation Project</p>
-    <p>Guided by Professor <a href="https://homepage.hit.edu.cn/wangmengzuo" target="_blank">Zuo Wangmeng</a>.</p>
-    <p> The project primarily focuses on creatively modifying artworks. It leverages the latent space of images for editing, enabling the transformation of static images into continuous motion videos.</p>
+<!-- ================= hero ================= -->
+<div class="hero">
+  <div class="hero-in">
+    <img src="./Files/bali.jpg" alt="Jiayang Li" />
+    <div>
+      <h1>Jiayang Li</h1>
+      <div class="role">M.S. Student in Computer Science and Technology, Peking University</div>
+      <p>
+        I work toward machines that move <b>from seeing to understanding</b> —
+        building the <b>visual foundations of general intelligence</b>.
+      </p>
+      <p class="focus">
+        My work spans low-level vision, visual understanding, and VAE.
+      </p>
+      <div class="pills">
+        <a class="pill" href="mailto:lijiayang.cs@gmail.com">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          lijiayang.cs@gmail.com
+        </a>
+        <a class="pill" href="https://scholar.google.com/citations?hl=en&user=f7AKG78AAAAJ" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+          Google Scholar
+        </a>
+        <a class="pill" href="https://github.com/Henry-Lee-real" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2c-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
   </div>
+  <button class="more" id="goMore" aria-label="Open full profile">
+    More
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+  </button>
 </div>
 
-<div class="section">
-  <img src="./projects/nus.png" alt="nus">
-  <div class="text-content">
-    <p>Masked Unmasked Face Recognition</p>
-    <p>NUS Summer Workshop</p>
-    <p>The project employs techniques of random occlusion to enhance the model's ability to recognize and detect faces under a range of conditions where the face may be partially obscured.</p>
+<!-- ================= sheet ================= -->
+<main class="sheet">
+  <div class="bar">
+    <div class="bar-in">
+      <button class="bar-name" id="goHome" aria-label="Back to cover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Jiayang Li
+      </button>
+      <nav>
+        <a href="#education">Education</a>
+        <a href="#internship">Internship</a>
+        <a href="#research">Research</a>
+        <a href="#honors">Honors</a>
+        <a href="#services">Services</a>
+      </nav>
+    </div>
   </div>
-</div>
 
-<div class="section">
-  <img src="./projects/ch.png" alt="ch">
-  <div class="text-content">
-    <p>Battery Defect Detection</p>
-    <p>Sichuan Changhong Electric Co.,Ltd. AI laboratory</p>
-    <p>Various data augmentation methods are used to overcome the scarcity of industrial defect data, enhancing the performance of segmentation and detection.</p>
+  <div class="sheet-in">
+
+    <section id="education">
+      <div class="label">Education</div>
+      <div>
+        <div class="row">
+          <div class="row-top">
+            <h3>Peking University</h3>
+            <time>2025.09 — Now</time>
+          </div>
+          <p>M.S. in Computer Science and Technology, School of ECE
+             <span class="adv">· Advised by</span>
+             <a href="https://www.jianzhang.tech/" target="_blank" rel="noopener">Jian Zhang</a></p>
+        </div>
+        <div class="row">
+          <div class="row-top">
+            <h3>Harbin Institute of Technology</h3>
+            <time>2021.09 — 2025.06</time>
+          </div>
+          <p>B.Eng. in Artificial Intelligence, Faculty of Computing
+             <span class="adv">· Advised by</span>
+             <a href="https://homepage.hit.edu.cn/jiangjunjun" target="_blank" rel="noopener">Junjun Jiang</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="internship">
+      <div class="label">Internship</div>
+      <div>
+        <div class="row">
+          <div class="row-top">
+            <h3>Tencent</h3>
+            <time>2026.06 — Now</time>
+          </div>
+          <p>Research Intern, Hunyuan</p>
+        </div>
+        <div class="row">
+          <div class="row-top">
+            <h3>Shanghai Artificial Intelligence Laboratory</h3>
+            <time>2025.01 — 2026.06</time>
+          </div>
+          <p>Research Intern, GVLab
+             <span class="adv">· Advised by</span>
+             <a href="https://lyh-18.github.io/" target="_blank" rel="noopener">Yihao Liu</a></p>
+        </div>
+        <div class="row">
+          <div class="row-top">
+            <h3>Sichuan Changhong Electric Co., Ltd.</h3>
+            <time>2022.12 — 2023.02</time>
+          </div>
+          <p>Research Intern, AI Laboratory</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="research">
+      <div class="label">Research</div>
+      <div>
+        <div class="cats">
+          <button class="cat" data-panel="cat-lowlevel">
+            <span>Low-level Vision</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <button class="cat" data-panel="cat-assessment">
+            <span>Image Assessment</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <button class="cat" data-panel="cat-vae">
+            <span>VAE</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+
+        <div class="panel" id="cat-lowlevel">
+          <div class="panel-in">
+            <article class="card">
+              <div>
+                <span class="tag">TPAMI 2026</span>
+                <h3>Towards Unified Semantic and Controllable Image Fusion:
+                    A Diffusion Transformer Approach</h3>
+                <p class="authors">
+                  <span class="me">Jiayang Li</span><sup>*</sup>, Chengjie Jiang<sup>*</sup>,
+                  Junjun Jiang<sup>†</sup>, Pengwei Liang, Jiayi Ma, Liqiang Nie
+                </p>
+                <p class="meta">
+                  <span class="venue">IEEE TPAMI 2026</span>
+                  <span class="sep">|</span><a href="https://ieeexplore.ieee.org/document/11297852" target="_blank" rel="noopener">paper</a>
+                  <span class="sep">|</span><a href="https://ronniejiang.github.io/DiTFuse/" target="_blank" rel="noopener">project</a>
+                </p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div>
+                <span class="tag">TIP 2025</span>
+                <h3>MaeFuse: Transferring Omni Features with Pretrained Masked Autoencoders
+                    for Infrared and Visible Image Fusion via Guided Training
+                    <span class="note">ESI Highly Cited</span></h3>
+                <p class="authors">
+                  <span class="me">Jiayang Li</span>, Junjun Jiang<sup>†</sup>, Pengwei Liang,
+                  Jiayi Ma, Liqiang Nie
+                </p>
+                <p class="meta">
+                  <span class="venue">IEEE TIP 2025</span>
+                  <span class="sep">|</span><a href="https://ieeexplore.ieee.org/document/10893688" target="_blank" rel="noopener">paper</a>
+                  <span class="sep">|</span><a href="https://arxiv.org/abs/2404.11016" target="_blank" rel="noopener">arXiv</a>
+                  <span class="sep">|</span><a href="https://github.com/Henry-Lee-real/MaeFuse" target="_blank" rel="noopener">code</a>
+                </p>
+              </div>
+            </article>
+            <p class="legend"><sup>*</sup> Equal contribution &nbsp;·&nbsp; <sup>†</sup> Corresponding author</p>
+          </div>
+        </div>
+
+        <div class="panel" id="cat-assessment">
+          <div class="panel-in">
+            <article class="card">
+              <div>
+                <span class="tag">ICML 2026 Spotlight</span>
+                <h3>UniPercept: Towards Unified Perceptual-Level Image Understanding
+                    across Aesthetics, Quality, Structure, and Texture</h3>
+                <p class="authors">
+                  Shuo Cao<sup>*</sup>, <span class="me">Jiayang Li</span><sup>*</sup>,
+                  Xiaohui Li, Yuandong Pu, Kaiwen Zhu, Yuanting Gao, Siqi Luo, Yi Xin, Qi Qin,
+                  Yu Zhou, Xiangyu Chen, Wenlong Zhang, Bin Fu, Yu Qiao, Yihao Liu<sup>†</sup>
+                </p>
+                <p class="meta">
+                  <span class="venue">ICML 2026 Spotlight</span>
+                  <span class="sep">|</span><a href="https://arxiv.org/abs/2512.21675" target="_blank" rel="noopener">paper</a>
+                  <span class="sep">|</span><a href="https://thunderbolt215.github.io/Unipercept-project/" target="_blank" rel="noopener">project</a>
+                </p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div>
+                <span class="tag">ICML 2026</span>
+                <h3>StableI2I: Spotting Unintended Changes in Image-to-Image Transition</h3>
+                <p class="authors">
+                  <span class="me">Jiayang Li</span><sup>*</sup>, Shuo Cao<sup>*</sup>,
+                  Xiaohui Li, Zhizhen Zhang, Kaiwen Zhu, Yule Duan, Yu Qiao,
+                  Jian Zhang<sup>†</sup>, Yihao Liu<sup>†</sup>
+                </p>
+                <p class="meta">
+                  <span class="venue">ICML 2026</span>
+                  <span class="sep">|</span><a href="https://arxiv.org/abs/2605.04453" target="_blank" rel="noopener">paper</a>
+                  <span class="sep">|</span><a href="https://henry-lee-real.github.io/StableI2I_Page/" target="_blank" rel="noopener">project</a>
+                </p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div>
+                <span class="tag">CVPR 2026</span>
+                <h3>ArtiMuse: Fine-Grained Image Aesthetics Assessment with Joint Scoring
+                    and Expert-Level Understanding</h3>
+                <p class="authors">
+                  Shuo Cao, Nan Ma, <span class="me">Jiayang Li</span>, Xiaohui Li, Lihao Shao,
+                  Kaiwen Zhu, Yu Zhou, Yuandong Pu, Jiarui Wu, Jiaquan Wang, Bo Qu, Wenhai Wang,
+                  Yu Qiao, Dajuin Yao<sup>†</sup>, Yihao Liu<sup>†</sup>
+                </p>
+                <p class="meta">
+                  <span class="venue">CVPR 2026</span>
+                  <span class="sep">|</span><a href="https://arxiv.org/pdf/2507.14533" target="_blank" rel="noopener">paper</a>
+                  <span class="sep">|</span><a href="https://thunderbolt215.github.io/ArtiMuse-project/" target="_blank" rel="noopener">project</a>
+                </p>
+              </div>
+            </article>
+            <p class="legend"><sup>*</sup> Equal contribution &nbsp;·&nbsp; <sup>†</sup> Corresponding author</p>
+          </div>
+        </div>
+
+        <div class="panel" id="cat-vae">
+          <div class="panel-in"><p class="soon">Papers coming soon.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="honors">
+      <div class="label">Honors</div>
+      <div>
+        <ul class="plain">
+          <li><b>Provincial Outstanding Graduate</b>, Heilongjiang Province. 2025.</li>
+          <li><b>Shenzhen Stock Exchange Scholarship</b>. 2023.</li>
+          <li><b>Provincial Merit Student</b>, Heilongjiang Province. 2023.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="label">Services</div>
+      <div>
+        <div class="row">
+          <h3>Conference Reviewer</h3>
+          <p>ACM International Conference on Multimedia (ACM MM)</p>
+        </div>
+        <div class="row">
+          <h3>Journal Reviewer</h3>
+          <p>IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)<br />
+             IEEE Transactions on Image Processing (TIP)<br />
+             IEEE Transactions on Circuits and Systems for Video Technology (TCSVT)</p>
+        </div>
+      </div>
+    </section>
+
   </div>
-</div>
- -->
-<div class="section">
-  <img src="./projects/maefuse.png" alt="maefuse">
-  <div class="text-content">
-    <p>TIP-2025</p>
-    <p>MaeFuse: Transferring Omni Features with Pretrained Masked Autoencoders for Infrared and Visible Image Fusion via Guided Training. Jiayang Li, Junjun Jiang, Pengwei Liang, Jiayi Ma, Liqiang
-Nie</p>
-    <p>
-	    [<a href="https://github.com/Henry-Lee-real/MaeFuse" target="_blank">code</a>]
-	    [<a href="https://arxiv.org/abs/2404.11016" target="_blank">pdf</a>]
-     </p>
-  </div>
-</div>
 
+  <footer>
+    <div class="foot-in">
+      <span>© 2026 Jiayang Li · Peking University</span>
+      <span><a href="mailto:lijiayang.cs@gmail.com">lijiayang.cs@gmail.com</a></span>
+    </div>
+  </footer>
+</main>
 
-<A NAME="Honors"><h2>Honors</h2></A>
-<font size="3"> 
-<ul>
-<li>2023, Shenzhen Stock Exchange Scholarship</li>
-<li>2023, Provincial Merit Student  </li>
-</ul>
-</font>
-
- 
-<br />
 <script>
-// 静默打点：页面加载时给 CounterAPI 发送一次 +1 请求
-fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up")
-  .then(function (r) {
-    // 不做前端展示，只在控制台打个日志方便你调试
-    return r.json();
-  })
-  .then(function (data) {
-    console.log("CounterAPI hit ok:", data);
-  })
-  .catch(function (err) {
-    console.error("CounterAPI error:", err);
-  });
-</script>
+  (function () {
+    var body = document.body;
 
+    // 空 hash 停在封面，其余（#main 及各栏目锚点）都属于内容页
+    function isCover() {
+      var h = location.hash;
+      return h === "" || h === "#" || h === "#home";
+    }
+    function apply(resetScroll) {
+      if (isCover()) {
+        body.classList.remove("entered");
+        window.scrollTo(0, 0);
+      } else {
+        body.classList.add("entered");
+        if (resetScroll) window.scrollTo(0, 0);
+      }
+    }
+
+    document.getElementById("goMore").addEventListener("click", function () {
+      location.hash = "#main";
+    });
+    document.getElementById("goHome").addEventListener("click", function () {
+      history.pushState(null, "", location.pathname);
+      apply(true);
+    });
+
+    // Research 分类：点开对应论文，同时只展开一个
+    var cats = document.querySelectorAll(".cat");
+    cats.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var panel = document.getElementById(btn.dataset.panel);
+        var wasOpen = btn.classList.contains("on");
+        cats.forEach(function (b) {
+          b.classList.remove("on");
+          document.getElementById(b.dataset.panel).classList.remove("open");
+        });
+        if (!wasOpen) {
+          btn.classList.add("on");
+          panel.classList.add("open");
+        }
+      });
+    });
+
+    window.addEventListener("hashchange", function () {
+      apply(location.hash === "#main");
+    });
+    window.addEventListener("popstate", function () { apply(true); });
+
+    apply(true);
+  })();
+</script>
 </body>
 </html>
