@@ -549,6 +549,10 @@
     window.addEventListener("popstate", function () { apply(true); });
 
     apply(true);
+
+    // 访问计数：静默 +1，页面不展示，失败也不影响其他功能
+    fetch("https://api.counterapi.dev/v2/jiayang-lis-team-1807/first-counter-1807/up")
+      .catch(function () {});
   })();
 </script>
 </body>
